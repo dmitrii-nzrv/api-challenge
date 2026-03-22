@@ -1,8 +1,15 @@
 import { test, expect } from '@playwright/test';
 
 const url = 'https://apichallenges.eviltester.com/';
-test.only('challenge 1 - получить авторизованный токен', async ({ request }) => {
+test('challenges', async ({ request }) => {
   let r = await request.post(`${url}challenger`);
-  console.log(r);
+  const token = r.headers();
+  console.log(`${url}gui/challenges/${token['x-challenger']}`);
+  r = await request.get(`${url}challenges`, {
+    headers: {
+      'X-CHALLENGER': token['x-challenger'],
+    },
+  });
+
   expect(1).toBe(1);
 });
